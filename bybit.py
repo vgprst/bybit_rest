@@ -58,7 +58,7 @@ class Bybit:
         self._secret = api_secret
         self._define_api()
 
-    def _define_api(self):
+    def _define_api(self) -> None:
         # public
         for name, url_tail in self._public.items():
             setattr(self, name, partial(self._request_public, url_tail))
@@ -77,7 +77,7 @@ class Bybit:
 
     # misc
     @staticmethod
-    def _get_signature(secret: str, req_params: dict):
+    def _get_signature(secret: str, req_params: Dict) -> str:
         """ https://github.com/bybit-exchange/api-connectors/blob/master/encryption_example/Encryption.py """
         val = '&'.join([f"{k}={v}" for k, v in sorted(req_params.items()) if (k != 'sign') and (v is not None)])
         return str(hmac.new(bytes(secret, "utf-8"), bytes(val, "utf-8"), digestmod="sha256").hexdigest())
